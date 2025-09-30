@@ -19,12 +19,18 @@ fn main() {
         let height = numbers.get(2).unwrap().parse::<i32>().unwrap();
 
 
+        let vol = length*width*height;
+
+        let mut sides = [length, width, height];
+        sides.sort();
+
+        let smallest_perimeter = (2*sides[0]) + (2*sides[1]);
+
         let area_1 = 2*length*width;
         let area_2 = 2*width*height;
         let area_3 = 2*height*length;
 
-let min_val = (area_1 / 2).min(area_2 / 2).min(area_3 / 2);
-        sum += area_1+area_2+area_3+min_val;
+        sum += smallest_perimeter + vol;
     });
     println!("{sum}");
 }
