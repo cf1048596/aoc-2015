@@ -9,9 +9,9 @@ fn main() {
         let hash = md5::compute(&to_hash);
         let output = format!("{hash:?}");
 
-        let first_five: String = output.chars().take(5).collect();
+        let first_five: String = output.chars().take(6).collect();
 
-        if first_five.as_str() == "00000" {
+        if first_five.as_str() == "000000" {
             println!("{hash:?}");
             println!("{to_hash}");
             break 'running;
