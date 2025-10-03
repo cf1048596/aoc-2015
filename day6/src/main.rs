@@ -2,7 +2,7 @@ use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let input = "input.txt";
-    let mut grid: Vec<Vec<bool>> = vec![vec![false; 1000]; 1000];
+    let mut grid: Vec<Vec<u8>> = vec![vec![0; 1000]; 1000];
     let file = std::fs::read_to_string(input)?;
     for line in file.lines() {
         println!("{line}");
@@ -30,35 +30,33 @@ fn main() -> Result<(), Box<dyn Error>> {
                 ("turn", "off") => {
                     for row in *first_set.first().unwrap()..=*second_set.first().unwrap() {
                         for col in *first_set.get(1).unwrap()..=*second_set.get(1).unwrap() {
-                            grid[row as usize][col as usize] = false;
+                            let cell = grid[row as usize][col as usize];
+                            if cell >= 1 {
+                                grid[row as usize][col as usize] -= 1;
+                            }
                         }
                     }
-
                 }
                 ("turn", "on") => {
                     for row in *first_set.first().unwrap()..=*second_set.first().unwrap() {
                         for col in *first_set.get(1).unwrap()..=*second_set.get(1).unwrap() {
-                            grid[row as usize][col as usize] = true;
+                            grid[row as usize][col as usize] += 1;
                         }
                     }
-
-
                 }
                 ("toggle", _) => {
                     for row in *first_set.first().unwrap()..=*second_set.first().unwrap() {
                         for col in *first_set.get(1).unwrap()..=*second_set.get(1).unwrap() {
-                            grid[row as usize][col as usize] = !grid[row as usize][col as usize];
+                            grid[row as usize][col as usize] += 2;
                         }
                     }
-
                 }
                 _ => (),
             }
         }
-
     }
 
-    let lit_lights = grid.iter().flatten().filter(|x| **x).count();
+    let lit_lights: u64 = grid.iter().flatten().map(|x| u64::from(*x)).sum();
     println!("lit lights: {lit_lights}");
     Ok(())
 }
